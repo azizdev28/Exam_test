@@ -1,5 +1,5 @@
 import React from "react";
-import "./home.scss";
+import "./Home.scss";
 import Images from "../../assets/images/image 2.png";
 import { NavLink } from "react-router-dom";
 

@@ -1,32 +1,33 @@
 // Product.jsx
 import React, { useEffect, useState } from "react";
-import "../product/producs.scss";
+import "../Product/Products.scss";
 import axios from "axios";
 import { FaSearch, FaEdit } from "react-icons/fa";
 import { MdOutlineDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Product = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [sortBy, setSortBy] = useState("");
 
   const fetchProducts = async () => {
     try {
-      setIsLoading(true); // Loading boshlanishi
+      setIsLoading(true);
       const response = await axios.get("http://localhost:3000/products");
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     } finally {
-      setIsLoading(false); // Loading tugashi
+      setIsLoading(false);
     }
   };
 
   const handleDelete = async (productId) => {
     try {
-      setIsLoading(true); // Loading boshlanishi
+      setIsLoading(true);
       const confirmDelete = window.confirm(
         `Haqiqatan ham mahsulotni o'chirmoqchimisiz?`
       );
@@ -40,8 +41,22 @@ const Product = () => {
     } catch (error) {
       console.error("Error deleting product:", error);
     } finally {
-      setIsLoading(false); // Loading tugashi
+      setIsLoading(false);
     }
+  };
+
+  const handleSortByPrice = () => {
+    const sortedProducts = [...products];
+    sortedProducts.sort((a, b) => a.price - b.price);
+    setProducts(sortedProducts);
+    setSortBy("price");
+  };
+
+  const handleSortByRating = () => {
+    const sortedProducts = [...products];
+    sortedProducts.sort((a, b) => b.rating - a.rating);
+    setProducts(sortedProducts);
+    setSortBy("rating");
   };
 
   useEffect(() => {
@@ -62,41 +77,53 @@ const Product = () => {
   if (searchTerm && filteredProducts.length === 0) {
     noResultsMessage = "Mahsulot topilmadi";
   }
+
   return (
-    <div className="product">
-      <div className="product__container">
+    <div className="Product">
+      <div className="ProductCard">
         <div className="product__block">
-          <div className="product__box">
-            <div className="product__top_block">
-              <h1 className="product__title">
+          <div className="Test">
+            <div className="ProductNav">
+              <h1 className="DataLenght">
                 {isLoading
                   ? "Loading..."
                   : `Все товары (${filteredProducts.length})`}
               </h1>
-              <div className="product__search_block">
+              <div className="SortButtons">
+                <button onClick={handleSortByPrice}>Сортировать по цене</button>
+                <button onClick={handleSortByRating}>
+                  Сортировать по рейтингу
+                </button>
+              </div>
+              <div className="Search">
                 <input
                   type="text"
                   name="search"
                   id="search"
                   placeholder="search"
-                  className="product__input"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <FaSearch />
               </div>
-              <div className="product__filter_block">
+              <div className="ProductFilter">
                 <button
-                  className="product__filter_btn"
+                  className="ProductFilterBtn"
                   onClick={() => setSearchTerm("smartphones")}
                 >
                   Smartphones
                 </button>
                 <button
-                  className="product__filter_btn"
+                  className="ProductFilterBtn"
                   onClick={() => setSearchTerm("laptops")}
                 >
                   Laptops
+                </button>
+                <button
+                  className="ProductFilterBtn"
+                  onClick={() => setSearchTerm("")}
+                >
+                  All
                 </button>
               </div>
             </div>
@@ -105,23 +132,23 @@ const Product = () => {
             )}
             {filteredProducts.map((product) => (
               <ul key={product.id}>
-                <li className="product__item">
-                  <div className="product__input_block">
+                <li className="ProductLine">
+                  <div className="PruductCheck">
                     <input type="checkbox" name="checkbox" id="checkbox" />
-                    <h1 className="product__id">Товар {product.id}</h1>
+                    <h3>Товар {product.id}</h3>
                   </div>
-                  <div className="product__itemm">
-                    <p className="product__rating">{product.rating}</p>
-                    <p className="product__brand">{product.brand}</p>
-                    <p className="product__price">{product.price}</p>
-                    <p className="product__category">{product.category}</p>
+                  <div className="ProductInfo">
+                    <p className="prodactName">{product.rating}</p>
+                    <p className="prodactName">{product.brand}</p>
+                    <p className="prodactName">{product.price}</p>
+                    <p className="prodactName">{product.category}</p>
                   </div>
-                  <div className="product__icon_block">
-                    <Link to={`/newProduct/${product.id}`}>
-                      <FaEdit className="product__icon" />
+                  <div className="ProdactIcon">
+                    <Link to={`/newProduct/`} className="Edit">
+                      <FaEdit className="edy" />
                     </Link>
                     <MdOutlineDelete
-                      className="product__iconn"
+                      className="Delete"
                       onClick={() => handleDelete(product.id)}
                     />
                   </div>
@@ -130,6 +157,12 @@ const Product = () => {
             ))}
           </div>
         </div>
+      </div>
+      <div className="CreateProduct">
+        <NavLink to="/newProduct">
+          <button> + Новый товар</button>
+        </NavLink>
+        <span>© Anymarket 2022</span>
       </div>
     </div>
   );

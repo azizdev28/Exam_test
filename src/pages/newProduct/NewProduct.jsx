@@ -2,20 +2,23 @@
 import React, { useState, useEffect } from "react";
 import "./newProduct.scss";
 import axios from "axios";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useParams, useNavigate } from "react-router-dom";
 
 const NewProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({
-    productName: "",
+    title: "",
     brand: "",
     manufacturerCode: "",
     description: "",
     price: "",
     discountedPrice: "",
+    rating: "",
   });
+  const [manufacturerCode, setManufacturerCode] = useState("");
   const [isSaved, setIsSaved] = useState(false);
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -24,6 +27,7 @@ const NewProduct = () => {
           `http://localhost:3000/products/${id}`
         );
         setProduct(response.data);
+        setManufacturerCode(response.data.manufacturerCode || "");
       } catch (error) {
         console.error("Error fetching product details:", error);
       }
@@ -37,15 +41,17 @@ const NewProduct = () => {
   const validateForm = () => {
     const errors = {};
 
-    if (!product.productName.trim()) {
-      errors.productName = "Название обязательно";
+    if (!product.title.trim()) {
+      errors.title = "Название обязательно";
     }
 
     if (!product.brand.trim()) {
       errors.brand = "Бренд обязателен";
     }
 
-    // Qolgan inputlar uchun ham validatsiya qo'shing
+    if (!manufacturerCode.trim()) {
+      errors.manufacturerCode = "Артикул производителя обязателен";
+    }
 
     return errors;
   };
@@ -60,15 +66,22 @@ const NewProduct = () => {
       }
 
       if (id) {
-        // Update existing product
-        await axios.put(`http://localhost:3000/products/${id}`, product);
+        await axios.put(`http://localhost:3000/products/${id}`, {
+          ...product,
+          manufacturerCode,
+        });
       } else {
-        // Create new product
-        await axios.post("http://localhost:3000/products", product);
+        await axios.post("http://localhost:3000/products", {
+          ...product,
+          manufacturerCode,
+        });
       }
 
       setIsSaved(true);
       setErrors({});
+
+      // Product page ga o'tish
+      navigate("/product");
     } catch (error) {
       console.error("Error saving product:", error);
     }
@@ -76,12 +89,13 @@ const NewProduct = () => {
 
   const handleCancel = () => {
     setProduct({
-      productName: "",
+      title: "",
       brand: "",
       manufacturerCode: "",
       description: "",
       price: "",
       discountedPrice: "",
+      rating: "",
     });
 
     setIsSaved(false);
@@ -90,30 +104,34 @@ const NewProduct = () => {
 
   return (
     <div className="newProduct">
-      <div className="newProduct__container">
-        <NavLink to="/product">
-          <button className="newProduct__btn">Основные</button>
-        </NavLink>
+      <div className="AddProduct">
+        <div className="ExitBtn">
+          <NavLink to="/product">
+            <button>Основные</button>
+          </NavLink>
+        </div>
         <div className="newProduct">
           <form className="form__container">
-            <label className="newProduct__label">Название *</label>
-            <input
-              className={`newProduct__input_1 ${
-                errors.productName ? "error" : ""
-              }`}
-              type="text"
-              value={product.productName}
-              onChange={(e) =>
-                setProduct({ ...product, productName: e.target.value })
-              }
-            />
-            {errors.productName && (
-              <p className="error-message">{errors.productName}</p>
-            )}
+            <div className="nameProduct">
+              <label className="newProduct__label">
+                Название <span>*</span>
+              </label>
 
-            <div className="newProduct__input_block">
-              <div className="newProduct__left">
-                <label className="newProduct__label">Бренд *</label>
+              <input
+                className={`newProduct__input_1 ${errors.title ? "error" : ""}`}
+                type="text"
+                value={product.title}
+                onChange={(e) =>
+                  setProduct({ ...product, title: e.target.value })
+                }
+              />
+              {errors.title && <p className="error-message">{errors.title}</p>}
+            </div>
+            <div className="BrendLine">
+              <div className="Brend">
+                <label className="newProduct__label">
+                  Бренд <span>*</span>
+                </label>
                 <input
                   className={`newProduct__input_2 ${
                     errors.brand ? "error" : ""
@@ -128,20 +146,37 @@ const NewProduct = () => {
                   <p className="error-message">{errors.brand}</p>
                 )}
               </div>
-              {/* Qolgan inputlar uchun ham validatsiya qo'shing */}
+              <div className="SerCode">
+                <label className="newProduct__label">
+                  Артикул производителя <span> *</span>
+                </label>
+                <input
+                  className={`newProduct__input_4 ${
+                    errors.manufacturerCode ? "error" : ""
+                  }`}
+                  type="text"
+                  value={manufacturerCode}
+                  onChange={(e) => setManufacturerCode(e.target.value)}
+                />
+                {errors.manufacturerCode && (
+                  <p className="error-message">{errors.manufacturerCode}</p>
+                )}
+              </div>
             </div>
-
-            <label className="newProduct__label">Описание *</label>
-            <textarea
-              className="newProduct__area"
-              value={product.description}
-              onChange={(e) =>
-                setProduct({ ...product, description: e.target.value })
-              }
-            ></textarea>
-
-            <div className="newProduct__input_block">
-              <div>
+            <div className="Comment">
+              <label className="newProduct__label">
+                Описание <span>*</span>
+              </label>
+              <textarea
+                className="newProduct__area"
+                value={product.description}
+                onChange={(e) =>
+                  setProduct({ ...product, description: e.target.value })
+                }
+              ></textarea>
+            </div>
+            <div className="Money">
+              <div className="Summa">
                 <label className="newProduct__label">Цена</label>
                 <input
                   className="newProduct__input_3"
@@ -152,7 +187,7 @@ const NewProduct = () => {
                   }
                 />
               </div>
-              <div>
+              <div className="SilceSum">
                 <label className="newProduct__label">Цена со скидкой</label>
                 <input
                   className="newProduct__input_3"
@@ -166,34 +201,35 @@ const NewProduct = () => {
                   }
                 />
               </div>
+
+              {isSaved && (
+                <div className="newProductSaved">
+                  <h2>New Product Saved:</h2>
+                  <p>Name: {product.title}</p>
+                  <p>Brand: {product.brand}</p>
+                  <p>Rating: {product.rating}</p>
+                  <p>Manufacturer Code: {product.manufacturerCode}</p>
+                  <p>Description: {product.description}</p>
+                  <p>Price: {product.price}</p>
+                  <p>Discounted Price: {product.discountedPrice}</p>
+                  {/* Boshqa malumotlar... */}
+                </div>
+              )}
             </div>
           </form>
         </div>
       </div>
 
       <div className="footer">
-        <div className="footer__block">
-          <button className="footer__btn" onClick={handleSave}>
+        <div className="FooterInfo">
+          <button className="SaveInfo" onClick={handleSave}>
             Сохранить
           </button>
-          <button className="footer__btnn" onClick={handleCancel}>
+          <button className="IgnorSave" onClick={handleCancel}>
             Отмена
           </button>
         </div>
       </div>
-
-      {isSaved && (
-        <div className="newProductSaved">
-          <h2>New Product Saved:</h2>
-          <p>Name: {product.productName}</p>
-          <p>Brand: {product.brand}</p>
-          <p>Manufacturer Code: {product.manufacturerCode}</p>
-          <p>Description: {product.description}</p>
-          <p>Price: {product.price}</p>
-          <p>Discounted Price: {product.discountedPrice}</p>
-          {/* Boshqa malumotlar... */}
-        </div>
-      )}
     </div>
   );
 };
