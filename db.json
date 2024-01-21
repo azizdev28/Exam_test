@@ -109,16 +109,6 @@
         "https://cdn.dummyjson.com/product-images/9/4.jpg",
         "https://cdn.dummyjson.com/product-images/9/thumbnail.jpg"
       ]
-    },
-    {
-      "id": "d465",
-      "title": "Azizbek",
-      "brand": "Apple",
-      "manufacturerCode": "123",
-      "description": "Exam 6",
-      "price": "120",
-      "discountedPrice": "20%",
-      "rating": "3.5"
     }
   ]
 }

@@ -167,3 +167,20 @@
     line-height: 72%; /* 10.08px */
   }
 }
+.SortButtons {
+  display: flex;
+  gap: 10px;
+
+  button {
+    color: #fff;
+    font-family: Mulish;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 72%; /* 10.08px */
+    border-radius: 6px;
+    background: #1bc58d;
+    border: none;
+    padding: 12px;
+  }
+}
