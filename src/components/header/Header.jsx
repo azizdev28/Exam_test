@@ -1,5 +1,5 @@
 import React from "react";
-import "./Header.scss";
+import "../header/Header.scss";
 import { NavLink } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 
