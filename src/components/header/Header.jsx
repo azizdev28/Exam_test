@@ -3,7 +3,7 @@ import "./Header.scss";
 import { NavLink } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 
-const Header = () => {
+const Header = ({ user }) => {
   return (
     <div className="Header">
       <div className="Container">
@@ -21,6 +21,9 @@ const Header = () => {
                 Новый товар
               </NavLink>
             </div>
+          </div>
+          <div>
+            <h2>Username:{user} </h2>
           </div>
           <NavLink to="/login">
             <div className="logOut">

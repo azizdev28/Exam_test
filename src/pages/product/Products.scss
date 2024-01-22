@@ -184,3 +184,21 @@
     padding: 12px;
   }
 }
+.Pagination {
+  display: flex;
+  gap: 10px;
+
+  button {
+    display: flex;
+    width: 25px;
+    height: 25px;
+    padding: 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 19px;
+    border-radius: 6px;
+    border: none;
+    background: #5b5ce2;
+    color: #fff;
+  }
+}

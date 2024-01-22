@@ -7,12 +7,12 @@ const Home = () => {
   return (
     <div className="home">
       <div className="home__container">
-        <div className="home__block">
-          <h1 className="home__title">Вы пока не создали ни одного товара</h1>
+        <div className="home__block HomeLine">
+          <h1 className="HomeInfo">Вы пока не создали ни одного товара</h1>
           <img className="home__img" src={Images} alt="Images" />
           <div>
             <NavLink to="/newProduct">
-              <button className="home__btn">Создать первый товар</button>
+              <button className="CreateBtn">Создать первый товар</button>
             </NavLink>
           </div>
         </div>

@@ -1,4 +1,3 @@
-// NewProduct.jsx
 import React, { useState, useEffect } from "react";
 import "./newProduct.scss";
 import axios from "axios";

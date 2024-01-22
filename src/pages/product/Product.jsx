@@ -1,17 +1,18 @@
-// Product.jsx
 import React, { useEffect, useState } from "react";
 import "../Product/Products.scss";
 import axios from "axios";
 import { FaSearch, FaEdit } from "react-icons/fa";
 import { MdOutlineDelete } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
-const Product = () => {
+const Product = ({ login }) => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [sortBy, setSortBy] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
 
   const fetchProducts = async () => {
     try {
@@ -72,6 +73,19 @@ const Product = () => {
       (product.category && product.category.toString().includes(searchTerm))
   );
 
+  const indexOfLastProduct = currentPage * itemsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const navigate = useNavigate();
+  const pageNumbers = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   let noResultsMessage = "";
 
   if (searchTerm && filteredProducts.length === 0) {
@@ -130,7 +144,7 @@ const Product = () => {
             {noResultsMessage && (
               <p className="product__no_results_message">{noResultsMessage}</p>
             )}
-            {filteredProducts.map((product) => (
+            {currentProducts.map((product) => (
               <ul key={product.id}>
                 <li className="ProductLine">
                   <div className="PruductCheck">
@@ -155,6 +169,13 @@ const Product = () => {
                 </li>
               </ul>
             ))}
+            <div className="Pagination">
+              {Array.from({ length: pageNumbers }).map((_, index) => (
+                <button key={index} onClick={() => handlePageClick(index + 1)}>
+                  {index + 1}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

@@ -61,8 +61,16 @@
   input {
     width: 764px;
     height: 44px;
+    padding: 0 10px;
+    flex-shrink: 0;
     border-radius: 6px;
     background: #f6f6fb;
+    color: #212121;
+    font-family: Mulish;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 72%; /* 10.8px */
   }
 }
 .BrendLine {
@@ -82,9 +90,16 @@
     input {
       width: 362px;
       height: 44px;
+      padding: 0 10px;
       flex-shrink: 0;
       border-radius: 6px;
       background: #f6f6fb;
+      color: #212121;
+      font-family: Mulish;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 72%; /* 10.8px */
     }
 
     label {
@@ -116,9 +131,16 @@
     input {
       width: 362px;
       height: 44px;
+      padding: 0 10px;
       flex-shrink: 0;
       border-radius: 6px;
       background: #f6f6fb;
+      color: #212121;
+      font-family: Mulish;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 72%; /* 10.8px */
     }
 
     span {
@@ -149,8 +171,16 @@
   textarea {
     width: 764px;
     height: 110px;
+    padding: 0 10px;
+    flex-shrink: 0;
     border-radius: 6px;
     background: #f6f6fb;
+    color: #212121;
+    font-family: Mulish;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 72%; /* 10.8px */
   }
 }
 
@@ -170,7 +200,16 @@
     input {
       width: 228px;
       height: 44px;
+      padding: 0 10px;
+      flex-shrink: 0;
+      border-radius: 6px;
       background: #f6f6fb;
+      color: #212121;
+      font-family: Mulish;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 72%; /* 10.8px */
     }
   }
 
@@ -185,7 +224,16 @@
     input {
       width: 228px;
       height: 44px;
+      padding: 10px 10px;
+      flex-shrink: 0;
+      border-radius: 6px;
       background: #f6f6fb;
+      color: #212121;
+      font-family: Mulish;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 72%; /* 10.8px */
     }
   }
 }

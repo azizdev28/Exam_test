@@ -14,9 +14,9 @@ body {
   font-family: "Mulish", sans-serif;
 }
 
-.block {
+.Admin {
   display: flex;
 }
-.block__second {
+.AdminPanel {
   width: 100%;
 }
